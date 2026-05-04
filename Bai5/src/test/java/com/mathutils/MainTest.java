@@ -7,8 +7,11 @@ public class MainTest {
     @Test
     void testCheckRank() {
         Main main = new Main();
-        // Sửa dòng này: Không ghi "expected:", không ghi "score:"
+
+        // Test case cho trường hợp Pass
         assertEquals("Pass", main.checkRank(85));
+
+        // Test case cho trường hợp Fail
         assertEquals("Fail", main.checkRank(70));
     }
 }
