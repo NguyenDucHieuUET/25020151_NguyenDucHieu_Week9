@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-    # 1. Cấu hình Matrix Strategy chạy trên 3 hệ điều hành
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -19,21 +18,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # BÀI 7: Tự động review code và comment vào Pull Request
+      - name: Run Checkstyle Review
+        if: github.event_name == 'pull_request'
+        uses: dbelyaev/action-checkstyle@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          level: warning
+          reporter: github-pr-review
+
       - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
 
       - name: Build and Test with Maven
-        # BÀI 5: Đổi từ 'package' sang 'verify' để kích hoạt JaCoCo Check (80%)
-        # Nếu coverage dưới 80%, bước này sẽ báo lỗi X đỏ ngay lập tức
         run: mvn clean verify
 
       - name: Upload JaCoCo Coverage Report
-        # BÀI 5: Trích xuất và lưu trữ báo cáo bao phủ code
-        # 'if: always()' đảm bảo báo cáo vẫn được upload kể cả khi build fail (để Hiếu xem tại sao fail)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -41,7 +45,6 @@ jobs:
           path: "**/target/site/jacoco/"
 
       - name: Upload Build Artifact
-        # Giữ lại bước upload file Jar từ bài cũ
         if: matrix.os == 'ubuntu-latest' && success()
         uses: actions/upload-artifact@v4
         with:
