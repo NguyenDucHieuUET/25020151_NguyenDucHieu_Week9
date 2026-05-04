@@ -8,12 +8,11 @@ on:
 
 jobs:
   build:
-    # 1. Cấu hình Matrix Strategy
+    # 1. Cấu hình Matrix Strategy chạy trên 3 hệ điều hành
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
-    # 2. Sử dụng biến matrix.os để chạy trên nhiều hệ điều hành
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -28,13 +27,23 @@ jobs:
           cache: maven
 
       - name: Build and Test with Maven
-        # Lệnh này sẽ chạy các Unit Test mà bạn đã tạo ở bước lỗi đường dẫn
-        run: mvn clean package
+        # BÀI 5: Đổi từ 'package' sang 'verify' để kích hoạt JaCoCo Check (80%)
+        # Nếu coverage dưới 80%, bước này sẽ báo lỗi X đỏ ngay lập tức
+        run: mvn clean verify
 
-      - name: Upload Build Artifact
-        # Chỉ upload artifact từ máy Ubuntu để tránh trùng lặp hoặc lỗi nếu muốn
-        if: matrix.os == 'ubuntu-latest'
+      - name: Upload JaCoCo Coverage Report
+        # BÀI 5: Trích xuất và lưu trữ báo cáo bao phủ code
+        # 'if: always()' đảm bảo báo cáo vẫn được upload kể cả khi build fail (để Hiếu xem tại sao fail)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Bai3-Executable-Jar
-          path: Bai3/target/*.jar
+          name: jacoco-report-${{ matrix.os }}
+          path: "**/target/site/jacoco/"
+
+      - name: Upload Build Artifact
+        # Giữ lại bước upload file Jar từ bài cũ
+        if: matrix.os == 'ubuntu-latest' && success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Final-Project-Artifacts
+          path: "**/target/*.jar"

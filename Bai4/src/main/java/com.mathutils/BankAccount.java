@@ -23,7 +23,9 @@ public class BankAccount {
 
     // --- PHẦN THÊM MỚI CHO BÀI 4 ---
     public String getStatementPath() {
-        // CỐ TÌNH SAI: Dùng dấu \ cứng của Windows để tạo lỗi trên Linux/Mac
-        return "target\\statements\\account_report.pdf";
+        // Tái cấu trúc: Sử dụng File.separator để tự động thích nghi OS
+        return "target" + java.io.File.separator +
+                "statements" + java.io.File.separator +
+                "account_report.pdf";
     }
 }
