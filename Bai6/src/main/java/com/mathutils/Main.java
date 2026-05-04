@@ -17,5 +17,6 @@ public class Main {
         Main app = new Main();
         int[] data = {10, 25, 8, 30, 15};
         System.out.println("Max value: " + app.findMax(data));
+        System.out.println("Checking cache performance..."); // Thêm dòng này
     }
 }
