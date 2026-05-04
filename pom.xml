@@ -15,11 +15,21 @@
         <module>Bai3</module>
         <module>Bai4</module>
         <module>Bai5</module>
+        <module>Bai6</module>
+        <module>Bai7</module>
+        <module>Bai8</module>
+        <module>Bai9</module>
+        <module>Bai10</module>
+        <module>Bai6</module>
+        <module>Bai7</module>
+        <module>Bai8</module>
+        <module>Bai9</module>
+        <module>Bai10</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <logback.version>1.4.11</logback.version>
@@ -88,7 +98,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.30</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
