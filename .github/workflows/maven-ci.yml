@@ -8,7 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # 1. Cấu hình Matrix Strategy
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    # 2. Sử dụng biến matrix.os để chạy trên nhiều hệ điều hành
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -22,11 +28,12 @@ jobs:
           cache: maven
 
       - name: Build and Test with Maven
-        # Chạy lệnh này để kiểm tra toàn bộ project (Bai1, Bai2, Bai3)
+        # Lệnh này sẽ chạy các Unit Test mà bạn đã tạo ở bước lỗi đường dẫn
         run: mvn clean package
 
       - name: Upload Build Artifact
-        # Đề bài yêu cầu lưu trữ file .jar
+        # Chỉ upload artifact từ máy Ubuntu để tránh trùng lặp hoặc lỗi nếu muốn
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: Bai3-Executable-Jar
