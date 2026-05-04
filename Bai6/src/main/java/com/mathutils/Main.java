@@ -20,3 +20,5 @@ public class Main {
         System.out.println("Checking cache performance..."); // Thêm dòng này
     }
 }
+//lan1:32s
+//lan2:29s
